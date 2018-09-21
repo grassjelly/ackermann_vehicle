@@ -5,9 +5,9 @@
       <uri>model://sun</uri>
     </include>
     <include>
-      <uri>model://ackermann_vehicle_gazebo/models/track</uri>
+      <uri>model://track</uri>
       <name>track</name>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0.1 0 0 0</pose>
     </include>
   </world>
 </sdf>

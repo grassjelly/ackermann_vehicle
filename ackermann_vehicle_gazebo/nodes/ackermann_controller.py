@@ -48,7 +48,9 @@ Parameters:
 
     ~left_rear_wheel/link_name (string, default: left_wheel)
     ~right_rear_wheel/link_name (string, default: right_wheel)
+
         Names of links that have origins coincident with the centers of the
+
         left and right wheels, respectively. The rear wheel links are used to
         compute the vehicle's wheelbase.
 
@@ -176,7 +178,7 @@ class _AckermannCtrlr(object):
                     continue
 
                 pub = rospy.Publisher(ctrlr_name + "/command", Float64,
-                                      latch=True)
+                                      latch=True, queue_size=1)
                 _wait_for_ctrlr(list_ctrlrs, ctrlr_name)
                 pub.publish(eq_pos)
                 self._shock_pubs.append(pub)
@@ -262,7 +264,7 @@ class _AckermannCtrlr(object):
 
         self._ackermann_cmd_sub = \
             rospy.Subscriber("ackermann_cmd", AckermannDriveStamped,
-                             self.ackermann_cmd_cb, queue_size=1)
+                             self.ackermann_cmd_cb, queue_size=10)
 
     def spin(self):
         """Control the vehicle."""
