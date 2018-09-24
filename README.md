@@ -16,3 +16,6 @@ This fork contains a vehicle with camera and IMU. It also loads a simple track.
 
 ## Usage
 `roslaunch ackermann_vehicle_gazebo ackermann_vehicle.launch`
+
+## Controlling the vehicle using ros topics
+Highlevel control of the vehicle can be implemented by subscribing to the sensor topics and publishing to the `ackermann_cmd`topic. See [ackermann_controller](https://github.com/alfkjartan/ackermann_controller) for an example. 
