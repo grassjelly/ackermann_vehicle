@@ -37,7 +37,9 @@ limitations under the License.
 
 <launch>
   <arg name="namespace" default="ackermann_vehicle"/>
-  <arg name="world_name" default="worlds/empty.world"/>
+  <arg name="world_name" value="$(find ackermann_vehicle_gazebo)/worlds/blackroad.world"/>
+  <!-- Change the above at command line with argument world_name:=
+  <!-- <arg name="world_name" default="worlds/empty.world"/> -->
   <arg name="cmd_timeout" default="0.5"/>
 
   <!-- Vehicle pose -->
@@ -55,8 +57,8 @@ limitations under the License.
   <group ns="$(arg namespace)">
     <!-- Create the world. -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-      <!-- <arg name="world_name" value="$(arg world_name)"/> -->
-      <arg name="world_name" value="$(find ackermann_vehicle_gazebo)/worlds/trooper.world"/>
+      <arg name="world_name" value="$(arg world_name)"/>
+
     </include>
 
     <!-- Spawn the vehicle. -->

@@ -264,7 +264,7 @@ class _AckermannCtrlr(object):
 
         self._ackermann_cmd_sub = \
             rospy.Subscriber("ackermann_cmd", AckermannDriveStamped,
-                             self.ackermann_cmd_cb, queue_size=10)
+                             self.ackermann_cmd_cb, queue_size=2)
 
     def spin(self):
         """Control the vehicle."""
@@ -486,7 +486,7 @@ def _create_axle_cmd_pub(list_ctrlrs, axle_ctrlr_name):
 def _create_cmd_pub(list_ctrlrs, ctrlr_name):
     # Create a command publisher.
     _wait_for_ctrlr(list_ctrlrs, ctrlr_name)
-    return rospy.Publisher(ctrlr_name + "/command", Float64)
+    return rospy.Publisher(ctrlr_name + "/command", Float64, queue_size=1)
 
 
 def _get_steer_ang(phi):
