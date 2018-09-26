@@ -28,9 +28,9 @@
 	  </plane>
 	</geometry>
 	<material>
-	  <script>ackermann_vehicle_gazebo/models/track
-	    <uri>model://ackermann_vehicle_gazebo/models/track/materials/scripts</uri>
-	    <uri>model://ackermann_vehicle_gazebo/models/track/materials/textures</uri>
+	  <script>ackermann_vehicle_gazebo/models/blacktrack
+	    <uri>model://ackermann_vehicle_gazebo/models/blacktrack/materials/scripts</uri>
+	    <uri>model://ackermann_vehicle_gazebo/models/blacktrack/materials/textures</uri>
 	    <name>Lanes/Image</name>
 	  </script>
 	</material>
