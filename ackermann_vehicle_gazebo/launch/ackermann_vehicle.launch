@@ -48,7 +48,7 @@ limitations under the License.
   <arg name="z" default="0.1"/>
   <arg name="roll" default="0.0"/>
   <arg name="pitch" default="0.0"/>
-  <arg name="yaw" default="0.0"/>
+  <arg name="yaw" default="3.14"/>
 
   <include file="$(find ackermann_vehicle_description)/launch/ackermann_vehicle.launch">
     <arg name="namespace" value="$(arg namespace)"/>
