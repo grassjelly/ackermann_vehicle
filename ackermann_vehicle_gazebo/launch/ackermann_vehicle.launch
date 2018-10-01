@@ -37,18 +37,23 @@ limitations under the License.
 
 <launch>
   <arg name="namespace" default="ackermann_vehicle"/>
-  <arg name="world_name" value="$(find ackermann_vehicle_gazebo)/worlds/whiteroad.world"/>
+  <!-- <arg name="world_name" value="$(find ackermann_vehicle_gazebo)/worlds/whiteroad.world"/> -->
+  <arg name="world_name" default="$(find jackal_gazebo)/worlds/jackal_race.world" />
+
   <!-- Change the above at command line with argument world_name:= -->
   <!-- <arg name="world_name" default="worlds/empty.world"/> -->
   <arg name="cmd_timeout" default="0.5"/>
 
   <!-- Vehicle pose -->
   <arg name="x" default="0.0"/>
-  <arg name="y" default="-19.95"/>
+  <!-- <arg name="y" default="-19.95"/> -->
+  <arg name="y" default="0.0"/>
   <arg name="z" default="0.1"/>
   <arg name="roll" default="0.0"/>
   <arg name="pitch" default="0.0"/>
-  <arg name="yaw" default="3.14"/>
+  <!-- <arg name="yaw" default="3.14"/> -->
+  <arg name="yaw" default="0.00"/>
+
 
   <include file="$(find ackermann_vehicle_description)/launch/ackermann_vehicle.launch">
     <arg name="namespace" value="$(arg namespace)"/>
