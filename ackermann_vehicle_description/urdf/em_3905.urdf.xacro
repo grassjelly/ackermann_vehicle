@@ -41,12 +41,12 @@ limitations under the License.
   <xacro:property name="degrees_45" value="0.785398163"/>
   <xacro:property name="degrees_90" value="1.57079633"/>
 
-  <!-- chassis_length is measured along the x axis, chassis_width
-       along the y axis, and chassis_height along the z axis. -->
-  <xacro:property name="chassis_length" value="0.258"/>
-  <xacro:property name="chassis_width" value="0.168"/>
-  <xacro:property name="chassis_height" value="0.01"/>
-  <xacro:property name="chassis_mass" value="2.788"/>
+  <!-- base_link_length is measured along the x axis, base_link_width
+       along the y axis, and base_link_height along the z axis. -->
+  <xacro:property name="base_link_length" value="0.258"/>
+  <xacro:property name="base_link_width" value="0.168"/>
+  <xacro:property name="base_link_height" value="0.01"/>
+  <xacro:property name="base_link_mass" value="2.788"/>
 
   <!-- battery_dist is the distance between the inner edges of the
        batteries. battery_comp_depth is the battery compartment depth.
@@ -118,7 +118,7 @@ limitations under the License.
   <material name="battery_mat">
     <color rgba="0 0 1 1"/>
   </material>
-  <material name="chassis_mat">
+  <material name="base_link_mat">
     <color rgba="0.5 0.5 0.5 1"/>
   </material>
   <material name="tire_mat">
@@ -169,8 +169,8 @@ limitations under the License.
 
   <!-- Battery -->
   <xacro:macro name="battery" params="prefix reflect">
-    <joint name="chassis_to_${prefix}_battery" type="fixed">
-      <parent link="chassis"/>
+    <joint name="base_link_to_${prefix}_battery" type="fixed">
+      <parent link="base_link"/>
       <child link="${prefix}_battery_offset"/>
       <origin xyz="${battery_x_offset - battery_length / 2}
                    ${reflect * battery_dist / 2}
@@ -220,7 +220,7 @@ limitations under the License.
   <xacro:macro name="shock"
                params="lr_prefix fr_prefix lr_reflect fr_reflect child">
     <joint name="${lr_prefix}_${fr_prefix}_shock" type="prismatic">
-      <parent link="chassis"/>
+      <parent link="base_link"/>
       <child link="${child}"/>
 
       <origin xyz="${fr_reflect * wheelbase / 2}
@@ -337,50 +337,50 @@ limitations under the License.
                  lr_reflect="${lr_reflect}"/>
   </xacro:macro>
 
-  <!-- base_link must have geometry so that its axes can be displayed in
+  <!-- base_footprint must have geometry so that its axes can be displayed in
        rviz. -->
-  <link name="base_link">
+  <link name="base_footprint">
     <visual>
       <geometry>
         <box size="0.01 0.01 0.01"/>
       </geometry>
-      <material name="chassis_mat"/>
+      <material name="base_link_mat"/>
     </visual>
+  </link>
+  <gazebo reference="base_footprint">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <!-- base_link -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${-base_link_height / 2}"/>
+      <geometry>
+        <box size="${base_link_length} ${base_link_width} ${base_link_height}"/>
+      </geometry>
+      <material name="base_link_mat"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${-base_link_height / 2}"/>
+      <geometry>
+        <box size="${base_link_length} ${base_link_width} ${base_link_height}"/>
+      </geometry>
+    </collision>
+
+    <xacro:solid_cuboid_inertial
+        width="${base_link_length}" depth="${base_link_width}"
+        height="${base_link_height}" mass="${base_link_mass}">
+      <origin xyz="0 0 ${-base_link_height / 2}"/>
+    </xacro:solid_cuboid_inertial>
   </link>
   <gazebo reference="base_link">
     <material>Gazebo/Grey</material>
   </gazebo>
 
-  <!-- Chassis -->
-  <link name="chassis">
-    <visual>
-      <origin xyz="0 0 ${-chassis_height / 2}"/>
-      <geometry>
-        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
-      </geometry>
-      <material name="chassis_mat"/>
-    </visual>
-
-    <collision>
-      <origin xyz="0 0 ${-chassis_height / 2}"/>
-      <geometry>
-        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
-      </geometry>
-    </collision>
-
-    <xacro:solid_cuboid_inertial
-        width="${chassis_length}" depth="${chassis_width}"
-        height="${chassis_height}" mass="${chassis_mass}">
-      <origin xyz="0 0 ${-chassis_height / 2}"/>
-    </xacro:solid_cuboid_inertial>
-  </link>
-  <gazebo reference="chassis">
-    <material>Gazebo/Grey</material>
-  </gazebo>
-
-  <joint name="base_link_to_chasis" type="fixed">
-    <parent link="base_link"/>
-    <child link="chassis"/>
+  <joint name="base_footprint_to_chasis" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
   </joint>
 
   <!-- Batteries -->

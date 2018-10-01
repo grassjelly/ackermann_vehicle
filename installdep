@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+sudo apt-get install -y ros-kinetic-ackermann-msgs 
+sudo apt-get install -y ros-kinetic-ackermann-controller 
+sudo apt-get install -y ros-kinetic-ros-control 
+sudo apt-get install -y ros-kinetic-ros-controllers 
+sudo apt-get install -y ros-kinetic-controller-interface 
+sudo apt-get install -y ros-kinetic-controller-manager 
+sudo apt-get install -y ros-kinetic-controller-manager-msgs 
+sudo apt-get install -y ros-kinetic-gazebo-ros 
+sudo apt-get install -y ros-kinetic-gazebo-ros-control 
+sudo apt-get install -y ros-kinetic-gazebo-msgs 
+sudo apt-get install -y ros-kinetic-gazebo-ros-pkgs 
+sudo apt-get install -y ros-kinetic-gazebo-plugins
+
