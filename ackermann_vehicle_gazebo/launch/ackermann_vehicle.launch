@@ -85,4 +85,11 @@ limitations under the License.
       <rosparam file="$(find ackermann_vehicle_gazebo)/config/em_3905_ackermann_ctrlr_params.yaml" command="load"/>
     </node>
   </group>
+
+  <node name="ackermann_to_twist" pkg="ackermann_vehicle_gazebo" type="cmd_vel_to_ackermann_drive.py">
+    <param name="wheelbase" value="1.0"/>
+    <param name="frame_id" value="odom"/>
+    <param name="ackermann_cmd_topic" value="/ackermann_vehicle/ackermann_cmd"/>
+  </node>
+  
 </launch>
