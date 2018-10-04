@@ -5,20 +5,24 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Header
 from gazebo_msgs.srv import GetLinkState, GetLinkStateRequest
 from geometry_msgs.msg import Twist, Pose, Point, Quaternion, Vector3
+from ackermann_msgs.msg import AckermannDriveStamped
 import tf
 
 steering_angle = 0;
 
 def cmd_callback(vel):
-    steering_angle = vel.angular.z
+    global steering_angle
+    steering_angle = vel.drive.steering_angle
 
 rospy.init_node('odometry_publisher')
 
 odom_pub = rospy.Publisher ('/raw_odom', Odometry)
-cmd_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_callback)
+cmd_sub = rospy.Subscriber('/ackermann_vehicle/ackermann_cmd', AckermannDriveStamped, cmd_callback)
 
 rospy.wait_for_service ('/ackermann_vehicle/gazebo/get_link_state')
 get_model_srv = rospy.ServiceProxy('/ackermann_vehicle/gazebo/get_link_state', GetLinkState)
+
+odom_broadcaster = tf.TransformBroadcaster()
 
 odom=Odometry()
 header = Header()
@@ -45,12 +49,13 @@ while not rospy.is_shutdown():
 
     lrw_result = get_model_srv(left_rear_wheel)
     rrw_result = get_model_srv(right_rear_wheel)
+
     lrw_vel = lrw_result.link_state.twist.angular.y * (0.14605 / 2)
     rrw_vel = rrw_result.link_state.twist.angular.y * (0.14605 / 2)
 
     linear_velocity = (lrw_vel + rrw_vel) / 2
     angular_velocity = (linear_velocity * math.tan(steering_angle)) / 0.304
-    print angular_velocity
+    print steering_angle
 
     vel_dt = (current_time - last_vel_time).to_sec()
     last_vel_time = current_time
@@ -64,6 +69,14 @@ while not rospy.is_shutdown():
     heading += delta_heading
 
     odom_quat = tf.transformations.quaternion_from_euler(0, 0, heading)
+
+    odom_broadcaster.sendTransform(
+        (x_pos, y_pos, 0.),
+        odom_quat,
+        current_time,
+        "base_footprint",
+        "odom"
+    )
 
     # next, we'll publish the odometry message over ROS
     odom = Odometry()
@@ -79,5 +92,6 @@ while not rospy.is_shutdown():
 
     # publish the message
     odom_pub.publish(odom)
+
 
     r.sleep()
